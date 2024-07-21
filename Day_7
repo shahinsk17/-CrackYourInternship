@@ -1,0 +1,348 @@
+Question Delete nodes having greater value on right
+---------------------------------------------------------------
+class Solution
+{
+    public:
+    
+    Node* rev(Node* curr,Node* prev)
+    {
+        if(curr==NULL)
+        {
+        return prev;}
+        
+        Node* fur=curr->next;
+         curr->next=prev;
+        
+       return rev(fur,curr);
+    }
+    Node *compute(Node *head)
+    {
+        // your code goes here
+        
+    head=rev(head,NULL);
+        
+   Node* maxNode=head;
+   Node* prev=head;
+   Node* curr=head->next;
+   
+   while(curr)
+   {
+       if(curr->data<maxNode->data)
+       {
+           prev->next=curr->next;
+           delete curr;
+       }
+       else{
+            maxNode=curr;
+            prev=curr;
+            
+       }
+       curr=prev->next;
+   }
+      head=rev(head,NULL);
+     return head;   
+    }
+    
+};
+
+
+Question Palindrome Linked List
+--------------------------------------------------
+/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     ListNode *next;
+ *     ListNode() : val(0), next(nullptr) {}
+ *     ListNode(int x) : val(x), next(nullptr) {}
+ *     ListNode(int x, ListNode *next) : val(x), next(next) {}
+ * };
+ */
+class Solution {
+public:
+    bool isPalindrome(ListNode* head) {
+//         if(head->next==NULL) // if there is only one node
+//         {return true;}
+
+
+//         int count=0;
+//         ListNode*temp=head;
+     
+//         while(temp)
+//         {
+//             count++;
+//             temp=temp->next;
+//         }
+
+//         count/=2;
+         
+//          ListNode*prev=NULL,*curr=head;
+//         while(count--)
+//         {  prev=curr;
+//           curr=curr->next;
+
+//         }
+//         prev->next=NULL;  
+
+
+// // performing reverse on remaining part
+//         ListNode*fut=NULL;
+//         prev=NULL;
+
+//         while(curr){
+//             fut=curr->next;
+//             curr->next=prev;
+//             prev=curr;
+//             curr=fut;
+//         }
+
+
+//         ListNode*head1=head,*head2=prev;
+
+//         while(head1)
+//         {
+//             if(head1->val !=head2->val)
+//             {
+//                 return false;
+//             }
+//             head1=head1->next;
+//              head2=head2->next;
+//         }
+
+// return true;
+
+if(head->next==NULL)
+{
+    return true;
+}
+ListNode* temp=head;
+int cnt=0;
+
+while(temp)
+{
+    cnt++;
+    temp=temp->next;
+}
+
+cnt/=2;
+ListNode* prev=NULL;
+ListNode* curr=head;
+
+while(cnt--)
+{
+    prev=curr;
+    curr=curr->next;
+}
+   prev->next=NULL;
+  /// reversing half part
+
+   ListNode* fut=NULL;
+   prev=NULL;
+
+
+   while(curr)
+   {  fut=curr->next;
+    curr->next=prev;
+    prev=curr;
+    curr=fut;
+     
+   }
+
+   ListNode* head1=head;
+   ListNode* head2=prev;
+   
+   while(head1)
+   {
+    if(head1->val!=head2->val)
+    {
+        return false;
+    }
+    head1=head1->next;
+    head2=head2->next;
+   }
+
+   return true;
+
+
+    }
+};
+
+
+
+Question   Reverse Linked List
+-------------------------
+/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     ListNode *next;
+ *     ListNode() : val(0), next(nullptr) {}
+ *     ListNode(int x) : val(x), next(nullptr) {}
+ *     ListNode(int x, ListNode *next) : val(x), next(next) {}
+ * };
+ */
+class Solution {
+public:
+ListNode* rev(ListNode* prev,ListNode* curr)
+{
+    if(curr==NULL)
+    {
+        return prev;
+    }
+   ListNode* fut=curr->next;
+    curr->next=prev;
+    return rev(curr,fut);
+
+}
+    ListNode* reverseList(ListNode* head) {
+        head=rev(NULL,head);
+        return head;
+    }
+};
+
+Question Add Two Numbers
+ ------------------------------------------------------
+class Solution {
+public:
+    ListNode* addTwoNumbers(ListNode* l1, ListNode* l2) {
+        
+        ListNode* dummy=new ListNode(0);
+        ListNode* tail=dummy;
+    int sum=0,carry=0;
+        while(l1||l2||carry)
+        {     sum=carry;
+           if(l1)
+           {
+            sum+=l1->val;
+            l1=l1->next;
+           }
+           if(l2)
+           {
+            sum+=l2->val;
+            l2=l2->next;
+           }
+
+           carry=sum/10;
+           int digit=sum%10;
+            dummy->next=new ListNode(digit);
+            dummy=dummy->next;
+        }
+
+          
+        return tail->next;
+
+         
+    }
+};
+
+Question Copy List with Random Pointer
+----------------------------------------------------
+/*
+// Definition for a Node.
+class Node {
+public:
+    int val;
+    Node* next;
+    Node* random;
+    
+    Node(int _val) {
+        val = _val;
+        next = NULL;
+        random = NULL;
+    }
+};
+*/
+
+class Solution {
+public:
+
+  Node* find(Node* curr1,Node* curr2,Node* x)
+  {
+    if(x==NULL)
+    {
+        return NULL;
+    }
+
+    while(curr1!=x)
+    {
+        curr1=curr1->next;
+        curr2=curr2->next;
+    }
+    return curr2;
+  }
+    Node* copyRandomList(Node* head) {
+
+         Node* hCopy=new  Node(0);
+         Node* tempCopy=hCopy;
+
+         Node* temp=head;
+        // copying values without random pointer
+         while(temp)
+         {
+            tempCopy->next=new Node(temp->val);
+            tempCopy=tempCopy->next;
+            temp=temp->next;
+         }
+
+         tempCopy=hCopy;
+         hCopy=hCopy->next;
+         delete tempCopy;
+
+         tempCopy=hCopy;
+         temp=head;
+
+        // copy the random pointer
+         while(temp)
+         {
+            tempCopy->random=find(head,hCopy,temp->random);
+            tempCopy=tempCopy->next;
+            temp=temp->next;
+         }
+
+         return hCopy;
+    }
+};
+
+
+Question Reverse Linked List ||
+--------------------------------------------------------
+/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     ListNode *next;
+ *     ListNode() : val(0), next(nullptr) {}
+ *     ListNode(int x) : val(x), next(nullptr) {}
+ *     ListNode(int x, ListNode *next) : val(x), next(next) {}
+ * };
+ */
+class Solution {
+public:
+    ListNode* reverseBetween(ListNode* head, int left, int right) 
+{
+    if (!head || left == right) return head;
+ 
+    ListNode* dummy=new ListNode(0);
+    dummy->next=head;
+    ListNode* prev=dummy;
+
+    for(int i=1;i<left;i++)
+    {
+        prev=prev->next;
+    }
+    ListNode* curr=prev->next;
+    ListNode* fut=curr->next;
+
+    for(int i=0;i<(right-left);i++)
+    {
+        curr->next=fut->next;
+        fut->next=prev->next;
+        prev->next=fut;
+        fut=curr->next;
+         
+    }
+
+    return dummy->next;
+ 
+    }
+};
