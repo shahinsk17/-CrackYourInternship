@@ -1,0 +1,268 @@
+Question Remove Duplicates from Sorted Lis
+----------------------------------------------------------------
+ 
+class Solution {
+public:
+    ListNode* deleteDuplicates(ListNode* head) {
+       if(head==NULL|| head->next==NULL)
+       {
+        return  head;
+       }
+       
+       
+        ListNode* prev=head;
+        ListNode* curr=head->next;
+
+        while(curr)
+        {
+            if(prev->val==curr->val)
+            {
+                prev->next=curr->next;
+                delete curr;
+                curr=prev->next;
+            }
+            else{
+                curr=curr->next;
+                prev=prev->next;
+            }
+        }
+        return head;
+    }
+};
+
+
+Question Sort a linked list of 0s, 1s and 2s
+-------------------------------------------------------------------
+ class Solution
+{
+    public:
+     
+    Node* segregate(Node *head) 
+    {
+    
+    if(head->next==NULL || head==NULL)
+    {
+        return head;
+    }
+    
+    Node* hZero=new Node(0);
+    Node* hOne=new Node(0);
+    Node* hTwo=new Node(0);
+    
+    Node* tZero=hZero;
+    Node* tOne=hOne;
+    Node* tTwo=hTwo;
+    
+    while(head)
+    {
+        if(head->data==0)
+        {
+            tZero->next=head;
+            head=head->next;
+            tZero=tZero->next;
+            tZero->next=NULL;
+        }
+        else if(head->data==1)
+        {
+            tOne->next=head;
+            head=head->next;
+            tOne=tOne->next;
+            tOne->next=NULL;
+        }
+        else{
+            tTwo->next=head;
+            head=head->next;
+            tTwo=tTwo->next;
+            tTwo->next=NULL;
+             }
+    }
+    
+    
+    if(hOne->next)
+    {
+        tZero->next=hOne->next;
+        tOne->next=hTwo->next;
+    }
+    else{
+        tZero->next=hTwo->next;
+    }
+    
+       tZero=hZero;
+       hZero=hZero->next;
+       delete tZero;
+       
+       tOne=hOne;
+       hOne=hOne->next;
+       delete tOne;
+       
+       tTwo=hTwo;
+       hTwo=hTwo->next;
+       delete tTwo;
+       
+       return hZero;
+  }
+  
+};
+
+
+
+Question Merge Two Sorted Lists
+---------------------------------------------------------------------
+/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     ListNode *next;
+ *     ListNode() : val(0), next(nullptr) {}
+ *     ListNode(int x) : val(x), next(nullptr) {}
+ *     ListNode(int x, ListNode *next) : val(x), next(next) {}
+ * };
+ */
+class Solution {
+public:
+    ListNode* mergeTwoLists(ListNode* l1, ListNode* l2) {
+   
+
+    if(l1==NULL)
+    {
+        return l2;
+    }
+    
+    if(l2==NULL)
+    {
+        return l1;
+    }
+
+    ListNode* head=new ListNode(0);
+                                                                             ListNode*  temp=head;
+
+    while(l1 && l2)
+    {
+        if(l1->val<=l2->val)
+        {
+            temp->next=l1;
+            l1=l1->next;
+            temp=temp->next;
+            temp->next=NULL;
+        }
+        else{
+            temp->next=l2;
+            l2=l2->next;
+            temp=temp->next;
+            temp->next=NULL;
+        }
+    }
+
+    if(l1)
+    {
+        temp->next=l1;
+
+    }
+    if(l2)
+    {
+        temp->next=l2;
+    }
+
+    temp=head;
+    head=head->next;
+
+    delete temp;
+    return head;
+
+
+
+    }
+
+};
+
+
+Question Multiply two linked lists
+---------------------------------------------------------
+class solution {
+  public:
+    long long multiplyTwoLists(Node *temp1, Node *temp2) {
+        // code here
+        
+     const long long mod = 1000000007;   
+    long long val1 = 0;
+    long long val2 = 0;
+      
+      while(temp1)
+      {
+          val1=((val1*10)+temp1->data)%mod;
+          temp1=temp1->next;
+      }
+      while(temp2)
+      {
+          val2=((val2*10)+temp2->data)%mod;
+          temp2=temp2->next;
+      }
+      
+      
+      return (val1*val2)%mod;
+    }
+};
+
+
+Question Intersection of Two Linked Lists
+--------------------------------------------------------------
+
+/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     ListNode *next;
+ *     ListNode(int x) : val(x), next(NULL) {}
+ * };
+ */
+class Solution {
+public:
+    ListNode* getIntersectionNode(ListNode* headA, ListNode* headB) {
+       
+        int n1 = 1, n2 = 1;
+
+        ListNode* temp1 = headA;
+        ListNode* temp2 = headB;
+
+        while (temp1) {
+            n1++;
+            temp1 = temp1->next;
+        }
+
+        while (temp2) {
+            n2++;
+            temp2 = temp2->next;
+        }
+
+        int diff=0;
+
+        if (n1 > n2) {
+             diff = abs(n1 - n2);
+            for (int i = 0; i < diff; i++) {
+                headA = headA->next;
+            }
+        } 
+        else {
+             diff = abs(n1 - n2);
+            for (int i = 0; i < diff; i++) {
+                headB = headB->next;
+            }
+        }
+
+        temp1=headA;
+        temp2=headB;
+
+        while(temp1 && temp2)
+        {
+            if(temp1==temp2)
+            {
+                return temp1;
+            }
+            temp1=temp1->next;
+            temp2=temp2->next;
+        }
+
+
+        return NULL;
+    }
+};
